@@ -1,0 +1,2 @@
+--enrollment_schoolid is the school that transferred the student back.
+select enrollment_schoolid, (select ABBREVIATION from SCHOOLS where students.SCHOOLID=SCHOOL_NUMBER) School from students where student_number = &StudentNumber

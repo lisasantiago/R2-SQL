@@ -1,0 +1,32 @@
+SELECT students.STUDENT_NUMBER,
+students.MOTHER,
+students.FATHER,
+studentcorefields.MOTHER_HOME_PHONE,
+studentcorefields.FATHER_HOME_PHONE,
+studentcorefields.MOTHERDAYPHONE,
+studentcorefields.FATHERDAYPHONE,
+studentcorefields.MOTHER_EMPLOYER,
+studentcorefields.FATHER_EMPLOYER,
+PS.S_SC_STU_CONTACTS_X.MOTHER_EMAIL,
+PS.S_SC_STU_CONTACTS_X.GUARDIAN_EMPLOYER,
+PS.S_SC_STU_CONTACTS_X.GUARDIAN_HOME_PHONE,
+PS.S_SC_STU_CONTACTS_X.FATHER_EMAIL
+FROM students
+INNER JOIN studentcorefields
+ON studentcorefields.STUDENTSDCID = students.DCID
+INNER JOIN PS.S_SC_STU_CONTACTS_X
+ON PS.S_SC_STU_CONTACTS_X.STUDENTSDCID         = students.DCID
+WHERE (students.MOTHER                        IS NOT NULL
+OR students.FATHER                            IS NOT NULL
+OR studentcorefields.MOTHER_HOME_PHONE        IS NOT NULL
+OR studentcorefields.FATHER_HOME_PHONE        IS NOT NULL
+OR studentcorefields.MOTHERDAYPHONE           IS NOT NULL
+OR studentcorefields.FATHERDAYPHONE           IS NOT NULL
+OR studentcorefields.MOTHER_EMPLOYER          IS NOT NULL
+OR studentcorefields.FATHER_EMPLOYER          IS NOT NULL
+OR PS.S_SC_STU_CONTACTS_X.MOTHER_EMAIL        IS NOT NULL
+OR PS.S_SC_STU_CONTACTS_X.GUARDIAN_EMPLOYER   IS NOT NULL
+OR PS.S_SC_STU_CONTACTS_X.GUARDIAN_HOME_PHONE IS NOT NULL
+OR PS.S_SC_STU_CONTACTS_X.FATHER_EMAIL        IS NOT NULL)
+and students.SCHOOLID                          = 100
+AND students.ENROLL_STATUS                     = 0

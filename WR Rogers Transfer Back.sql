@@ -1,0 +1,48 @@
+--Find the students to be transferred back
+select * from ps_enrollment_all
+where schoolid = 43
+and entrydate > '31-AUG-2020'
+;
+select * from students
+where schoolid = 43
+and enroll_status = 0
+and id in (select id from reenrollments
+where reenrollments.studentid = students.id
+and exitdate > '01-JUL-2021'
+and schoolid != 43)
+;
+select id from reenrollments
+where reenrollments.studentid = ps_enrollment_all.studentid
+and exitdate > '01-JUL-2021'
+and schoolid != 43
+;
+select * from reenrollments
+;
+--Final sql used to search
+select distinct students.lastfirst, student_number from students join reenrollments on students.id = reenrollments.studentid
+where students.schoolid = 43
+and reenrollments.schoolid in (select school_number from schools)
+and reenrollments.exitdate > '01-JUL-2020'
+order by 1
+;
+--Students transferred by student id
+select student_number, lastfirst
+from students
+where student_number in (71023,790010028540,790010031218,790010031967,790010030151,84207,77026,790010027226,82066,790010029600,23780,67865,66358,28088,58255,19235,53893,19371,65849,790010031218,790010027988,790010017310,19406,11898,68086,58794,29428,790010037334,790010031967,790010030127,790010027718,790010024363,790010030755,790010026044,73621,22656,790010039602,53483,790010029911,11507,790010030151,70958,78467,790010027350,23896,12918,790010018768,84207,790010022419,790010034968,77026,77086,65825,33814,34729,72017,790010038725,790010029754,790010025907,17587,66782,790010027226,30786,790010027398,25799,790010032271,790010037582,66972,25158,790010024820,65461,790010029637,14108,25183,77679)
+;
+--Students transferred by exit date
+select * 
+from students
+where exitdate  = '29-JUN-2021'
+order by 3
+;
+select lastfirst, student_number, students.entrydate, students.exitdate, reenrollments.entrydate, reenrollments.exitdate
+from students
+join reenrollments on students.id = reenrollments.studentid
+where student_number in (71023,790010028540,790010031218,790010031967,790010030151,84207,77026,790010027226,82066,790010029600,23780,67865,66358,28088,58255,19235,53893,19371,65849,790010031218,790010027988,790010017310,19406,11898,68086,58794,29428,790010037334,790010031967,790010030127,790010027718,790010024363,790010030755,790010026044,73621,22656,790010039602,53483,790010029911,11507,790010030151,70958,78467,790010027350,23896,12918,790010018768,84207,790010022419,790010034968,77026,77086,65825,33814,34729,72017,790010038725,790010029754,790010025907,17587,66782,790010027226,30786,790010027398,25799,790010032271,790010037582,66972,25158,790010024820,65461,790010029637,14108,25183,77679)
+and students.exitdate = '29-JUN-2021'
+order by lastfirst, reenrollments.exitdate desc
+;
+select student_number, grade_level, building from students
+where exitdate = '29-JUN-2021'
+and building is null
